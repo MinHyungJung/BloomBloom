@@ -2,20 +2,24 @@ let friction = 0.98;
 let maxlifespan = 100;
 let maxSpeed = 20;
 var learnings = [];
-var magnet;
-var magnetStrength = 5;
+var me;
+var meStrength = 25;
 var Confettis = [];
+var msx = 50;
+var msy = 50;
 
 function setup() {
-  createCanvas(400, 400);
-  magnet = createVector(200,200);
+  createCanvas(700, 700);
+  me = createVector(350,350);
 }
 
 function draw() {
   background(230,100,100);
   strokeWeight(2);
   fill(255,0,0);
-  ellipse(magnet.x,magnet.y,50,50);
+  ellipse(me.x,me.y,msx,msy);
+  msx = msx + 0.1;
+  msy = msy + 0.1;
   fill(0);
   
   learnings.push(new learning(mouseX,mouseY,random(-1,1),random(-1,1)));
@@ -58,8 +62,8 @@ function learning(x, y, xvel, yvel){
     }
   
     this.magnet = function(){
-      var magpull = p5.Vector.sub(magnet,this.pos);
-      var magstrength = magnetStrength / this.pos.dist(magnet);
+      var magpull = p5.Vector.sub(me,this.pos);
+      var magstrength = meStrength / this.pos.dist(me);
       magpull.normalize().mult(magstrength);
       this.vel.add(magpull);
     }
@@ -92,8 +96,8 @@ function Confetti(x, y, xvel, yvel){
     }
   
     this.magnet = function(){
-      var magpull = p5.Vector.sub(magnet,this.pos);
-      var magstrength = magnetStrength / this.pos.dist(magnet);
+      var magpull = p5.Vector.sub(me,this.pos);
+      var magstrength = meStrength / this.pos.dist(me);
       magpull.normalize().mult(magstrength);
       this.vel.add(magpull);
     }
