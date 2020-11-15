@@ -1,7 +1,7 @@
 let friction = 0.98;
-let maxAge = 100;
+let maxlifespan = 100;
 let maxSpeed = 10;
-var particles = [];
+var learnings = [];
 var magnet;
 var magnetStrength = 5;
 
@@ -16,17 +16,17 @@ function draw() {
   fill(255,0,0);
   ellipse(magnet.x,magnet.y,50,50);
   fill(0);
-  particles.push(new particle(mouseX,mouseY,random(-1,1),random(-1,1)));
-  for (let p of particles){
+  learnings.push(new learning(mouseX,mouseY,random(-1,1),random(-1,1)));
+  for (let p of learnings){
     p.draw();
     p.move();
     p.magnet();
   }
   
-  particles = particles.filter(p => { return p.lifespan < maxAge})
+  learnings = learnings.filter(p => { return p.lifespan < maxlifespan})
 }
 
-function particle(x, y, xvel, yvel){
+function learning(x, y, xvel, yvel){
     this.pos = createVector(x,y);
     this.vel = createVector(random(-1, 1), random(-2, 2));
     this.lifespan = 10;
