@@ -1,6 +1,6 @@
 let friction = 0.98;
 let maxlifespan = 100;
-let maxSpeed = 10;
+let maxSpeed = 20;
 var learnings = [];
 var magnet;
 var magnetStrength = 5;
