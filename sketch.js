@@ -4,6 +4,7 @@ let maxSpeed = 20;
 var learnings = [];
 var magnet;
 var magnetStrength = 5;
+var Confettis = [];
 
 function setup() {
   createCanvas(400, 400);
@@ -16,6 +17,7 @@ function draw() {
   fill(255,0,0);
   ellipse(magnet.x,magnet.y,50,50);
   fill(0);
+  
   learnings.push(new learning(mouseX,mouseY,random(-1,1),random(-1,1)));
   for (let p of learnings){
     p.draw();
@@ -23,7 +25,16 @@ function draw() {
     p.magnet();
   }
   
+  Confettis.push(new Confetti(mouseX,mouseY,random(-1,1),random(-1,1)));
+  for (let p of Confettis){
+    p.draw();
+    p.move();
+    p.magnet();
+  }
+  
   learnings = learnings.filter(p => { return p.lifespan < maxlifespan})
+  
+  Confettis = Confettis.filter(p => { return p.lifespan < maxlifespan})
 }
 
 function learning(x, y, xvel, yvel){
@@ -52,8 +63,38 @@ function learning(x, y, xvel, yvel){
       magpull.normalize().mult(magstrength);
       this.vel.add(magpull);
     }
+}
+
+function Confetti(x, y, xvel, yvel){
+    this.pos = createVector(x,y);
+    this.vel = createVector(random(-1, 1), random(-2, 2));
+    this.lifespan = 10;
   
   
-
-
+    this.draw = function(){
+    rectMode(CENTER);
+    fill(255, this.lifespan*5);
+    stroke(255, this.lifespan);
+    strokeWeight(2);
+    push();
+    translate(this.pos.x, this.pos.y);
+    var theta = map(this.pos.x, 0, width, 0, TWO_PI * 2);
+    rotate(theta);
+    rect(0, 0, 12, 12);
+    pop();
+    }
+  
+    this.move = function(){
+      this.pos.add(this.vel);
+      this.vel.mult(friction);
+      this.vel.limit(maxSpeed);
+      this.lifespan++;
+    }
+  
+    this.magnet = function(){
+      var magpull = p5.Vector.sub(magnet,this.pos);
+      var magstrength = magnetStrength / this.pos.dist(magnet);
+      magpull.normalize().mult(magstrength);
+      this.vel.add(magpull);
+    }
 }
